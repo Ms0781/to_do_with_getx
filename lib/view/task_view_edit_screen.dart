@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_with_getx/controller/home_controller.dart';
+import 'package:to_do_with_getx/view/custom_widgets/delete_dialogue_widget.dart';
+
+import '../model/to_do_model.dart';
 
 class TaskEditViewScreen extends StatelessWidget{
   const TaskEditViewScreen({super.key});
@@ -8,7 +11,8 @@ class TaskEditViewScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.find(tag: "homeController");
-    return WillPopScope(child: Scaffold(
+    return WillPopScope(
+    child: Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.deepPurpleAccent,
@@ -23,10 +27,16 @@ class TaskEditViewScreen extends StatelessWidget{
         ),
         actions: [
           IconButton(onPressed: (){
-
+              Get.dialog(const DeleteDialogue());
           }, icon: const Icon(Icons.delete,color: Colors.white,)),
           IconButton(onPressed: (){
-
+              Todo? todo = homeController.viewTodo;
+              if(todo != null){
+                todo.title = homeController.titleController.text;
+                todo.description = homeController.descriptionController.text;
+                todo.lastUpdateTime = DateTime.now().toString();
+                homeController.updateTask(todo);
+              }
           }, icon: const Icon(Icons.done,color: Colors.white,))
 
         ],

@@ -7,4 +7,5 @@ class DBFields {
   static String columnDescription = "description";
   static String columnCreateDate = "createDate";
   static String columnUpdateDate = "updateDate";
+  static String columnDeleteStatus = "deleteStatus";
 }

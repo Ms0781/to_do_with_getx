@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:to_do_with_getx/data/database.dart';
+import 'package:to_do_with_getx/view/home_screen.dart';
 
 import '../model/to_do_model.dart';
 
@@ -28,7 +29,7 @@ class HomeController extends GetxController{
         title: titleController.text,
         description: descriptionController.text,
         timeOfCreation: "${DateTime.now()}",
-        lastUpdateTime: "${DateTime.now()}"));
+        lastUpdateTime: "${DateTime.now()}", deletedStatus: 0));
   }
 
   getToDoList() async{
@@ -41,4 +42,18 @@ class HomeController extends GetxController{
     viewTodo = todo;
     notifyChildrens();
   }
+
+  Future<void> deleteTask(int id) async{
+      DbHelper.instance.deleteTask(id).then((value) {
+        getToDoList();
+      });
+  }
+
+  void updateTask(Todo todo) async{
+    DbHelper.instance.updateTask(todo).then((value) {
+      getToDoList();
+      Get.offAll(const HomeScreen());
+    });
+  }
+
 }
